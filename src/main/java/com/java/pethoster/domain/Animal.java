@@ -1,4 +1,4 @@
-package com.java.pethoster.domain.entitie;
+package com.java.pethoster.domain;
 
 import com.java.pethoster.domain.enums.TypeAnimal;
 import jakarta.persistence.*;

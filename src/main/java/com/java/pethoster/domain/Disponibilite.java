@@ -1,4 +1,4 @@
-package com.java.pethoster.domain.entitie;
+package com.java.pethoster.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -6,20 +6,18 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
+
 @Entity
 @Getter
 @Setter
-public class Avis {
+public class Disponibilite {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer note;
-    private String commentaire;
-    private LocalDate dateAvis;
-
-    @ManyToOne
-    private Utilisateur proprietaire;
+    private LocalDate dateDebut;
+    private LocalDate dateFin;
+    private Boolean estDisponible;
 
     @ManyToOne
     private Utilisateur hebergeur;
