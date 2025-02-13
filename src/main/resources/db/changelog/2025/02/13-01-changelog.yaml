@@ -1,0 +1,387 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1739453657805-1
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_animal
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: nom
+                  type: VARCHAR(255)
+              - column:
+                  name: race
+                  type: VARCHAR(255)
+              - column:
+                  name: age
+                  type: INT
+              - column:
+                  name: espece
+                  type: VARCHAR(255)
+              - column:
+                  name: besoins_specifiques
+                  type: VARCHAR(255)
+              - column:
+                  name: carnet_vaccination
+                  type: VARCHAR(255)
+              - column:
+                  name: proprietaire_id
+                  type: BIGINT
+            tableName: animal
+  - changeSet:
+      id: 1739453657805-2
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: animal_id
+                  type: BIGINT
+              - column:
+                  name: photos
+                  type: VARCHAR(255)
+            tableName: animal_photos
+  - changeSet:
+      id: 1739453657805-3
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_avis
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: note
+                  type: INT
+              - column:
+                  name: commentaire
+                  type: VARCHAR(255)
+              - column:
+                  name: date_avis
+                  type: DATE
+              - column:
+                  name: proprietaire_id
+                  type: BIGINT
+              - column:
+                  name: hebergeur_id
+                  type: BIGINT
+            tableName: avis
+  - changeSet:
+      id: 1739453657805-4
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_messagerie
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: expediteur_id
+                  type: BIGINT
+              - column:
+                  name: destinataire_id
+                  type: BIGINT
+              - column:
+                  name: message
+                  type: VARCHAR(255)
+              - column:
+                  name: date_envoi
+                  type: DATE
+              - column:
+                  name: lu
+                  type: BOOLEAN
+            tableName: messagerie
+  - changeSet:
+      id: 1739453657805-5
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_paiement
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: montant
+                  type: DOUBLE
+              - column:
+                  name: date_paiement
+                  type: DATE
+              - column:
+                  name: statut_paiement
+                  type: VARCHAR(255)
+              - column:
+                  name: methode_paiement
+                  type: VARCHAR(255)
+              - column:
+                  name: reservation_id
+                  type: BIGINT
+            tableName: paiement
+  - changeSet:
+      id: 1739453657805-6
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_reservation
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: date_debut
+                  type: DATE
+              - column:
+                  name: date_fin
+                  type: DATE
+              - column:
+                  name: statut
+                  type: VARCHAR(255)
+              - column:
+                  name: nombre_animaux
+                  type: INT
+              - column:
+                  name: montant_total
+                  type: DOUBLE
+              - column:
+                  name: date_reservation
+                  type: DATE
+              - column:
+                  name: proprietaire_id
+                  type: BIGINT
+              - column:
+                  name: hebergeur_id
+                  type: BIGINT
+            tableName: reservation
+  - changeSet:
+      id: 1739453657805-7
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_utilisateur
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: nom
+                  type: VARCHAR(255)
+              - column:
+                  name: prenom
+                  type: VARCHAR(255)
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+              - column:
+                  name: mot_de_passe
+                  type: VARCHAR(255)
+              - column:
+                  name: telephone
+                  type: VARCHAR(255)
+              - column:
+                  name: adresse
+                  type: VARCHAR(255)
+              - column:
+                  name: photo_profil
+                  type: VARCHAR(255)
+              - column:
+                  name: role
+                  type: VARCHAR(255)
+              - column:
+                  name: tarif_par_jour
+                  type: DOUBLE
+              - column:
+                  name: description_service
+                  type: VARCHAR(255)
+            tableName: utilisateur
+  - changeSet:
+      id: 1739453657805-8
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: utilisateur_id
+                  type: BIGINT
+              - column:
+                  name: photos_hebergement
+                  type: VARCHAR(255)
+            tableName: utilisateur_photos_hebergement
+  - changeSet:
+      id: 1739453657805-9
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: utilisateur_id
+                  type: BIGINT
+              - column:
+                  name: type_animaux_acceptes
+                  type: VARCHAR(255)
+            tableName: utilisateur_type_animaux_acceptes
+  - changeSet:
+      id: 1739453657805-10
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: proprietaire_id
+            baseTableName: animal
+            constraintName: FK_ANIMAL_ON_PROPRIETAIRE
+            referencedColumnNames: id
+            referencedTableName: utilisateur
+  - changeSet:
+      id: 1739453657805-11
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: hebergeur_id
+            baseTableName: avis
+            constraintName: FK_AVIS_ON_HEBERGEUR
+            referencedColumnNames: id
+            referencedTableName: utilisateur
+  - changeSet:
+      id: 1739453657805-12
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: proprietaire_id
+            baseTableName: avis
+            constraintName: FK_AVIS_ON_PROPRIETAIRE
+            referencedColumnNames: id
+            referencedTableName: utilisateur
+  - changeSet:
+      id: 1739453657805-13
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: destinataire_id
+            baseTableName: messagerie
+            constraintName: FK_MESSAGERIE_ON_DESTINATAIRE
+            referencedColumnNames: id
+            referencedTableName: utilisateur
+  - changeSet:
+      id: 1739453657805-14
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: expediteur_id
+            baseTableName: messagerie
+            constraintName: FK_MESSAGERIE_ON_EXPEDITEUR
+            referencedColumnNames: id
+            referencedTableName: utilisateur
+  - changeSet:
+      id: 1739453657805-15
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: reservation_id
+            baseTableName: paiement
+            constraintName: FK_PAIEMENT_ON_RESERVATION
+            referencedColumnNames: id
+            referencedTableName: reservation
+  - changeSet:
+      id: 1739453657805-16
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: hebergeur_id
+            baseTableName: reservation
+            constraintName: FK_RESERVATION_ON_HEBERGEUR
+            referencedColumnNames: id
+            referencedTableName: utilisateur
+  - changeSet:
+      id: 1739453657805-17
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: proprietaire_id
+            baseTableName: reservation
+            constraintName: FK_RESERVATION_ON_PROPRIETAIRE
+            referencedColumnNames: id
+            referencedTableName: utilisateur
+  - changeSet:
+      id: 1739453657805-18
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: animal_id
+            baseTableName: animal_photos
+            constraintName: fk_animal_photos_on_animal
+            referencedColumnNames: id
+            referencedTableName: animal
+  - changeSet:
+      id: 1739453657805-19
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: utilisateur_id
+            baseTableName: utilisateur_photos_hebergement
+            constraintName: fk_utilisateur_photoshebergement_on_utilisateur
+            referencedColumnNames: id
+            referencedTableName: utilisateur
+  - changeSet:
+      id: 1739453657805-20
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: utilisateur_id
+            baseTableName: utilisateur_type_animaux_acceptes
+            constraintName: fk_utilisateur_typeanimauxacceptes_on_utilisateur
+            referencedColumnNames: id
+            referencedTableName: utilisateur
+

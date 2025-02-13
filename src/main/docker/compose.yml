@@ -1,0 +1,14 @@
+name: pethoster
+services:
+  postgres:
+    container_name: pethoster_db
+    image: 'postgres:17'
+    environment:
+      - 'POSTGRES_DB=pethoster'
+      - 'POSTGRES_PASSWORD=pethoster'
+      - 'POSTGRES_USER=pethoster'
+    ports:
+      - '5433:5432'
+volumes:
+  postgres_data:
+    driver: local

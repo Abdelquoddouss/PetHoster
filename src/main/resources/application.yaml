@@ -1,0 +1,22 @@
+spring:
+  docker:
+    compose:
+      enabled: true
+      lifecycle-management: start_only
+      file: src/main/docker/compose.yml
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        default_schema: public
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  liquibase:
+    enabled: true
+    change-log: db/changelog/2025/02/master.yaml
+server:
+  port: 8445
