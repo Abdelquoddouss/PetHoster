@@ -1,13 +1,11 @@
 package com.java.pethoster.domain;
 
-import com.java.pethoster.domain.enums.NiveauAcces;
 import com.java.pethoster.domain.enums.Role;
 import com.java.pethoster.domain.enums.TypeAnimal;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -22,10 +20,8 @@ public class Utilisateur {
     private String prenom;
     private String email;
     private String motDePasse;
-    private LocalDate dateInscription;
     private String telephone;
     private String adresse;
-    private boolean actif;
     private String photoProfil;
 
     @Enumerated(EnumType.STRING)
@@ -40,12 +36,8 @@ public class Utilisateur {
     private String descriptionService;
     @ElementCollection
     private List<String> photosHebergement;
-    private Boolean estVerifie;
-    private Double moyenneNotation;
 
-    // Attributs spécifiques pour ADMIN
-    @Enumerated(EnumType.STRING)
-    private NiveauAcces niveauAcces;
+
 
 
 
@@ -58,8 +50,6 @@ public class Utilisateur {
     @OneToMany(mappedBy = "proprietaire")
     private List<Avis> avisLaisses;
 
-    @OneToMany(mappedBy = "hebergeur")
-    private List<Disponibilite> disponibilites;
 
 
 }
