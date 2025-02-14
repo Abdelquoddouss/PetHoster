@@ -3,14 +3,17 @@ package com.java.pethoster.domain;
 import com.java.pethoster.domain.enums.Role;
 import com.java.pethoster.domain.enums.TypeAnimal;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Utilisateur {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,8 +34,10 @@ public class Utilisateur {
     // Attributs spécifiques pour HEBERGEUR
     private Double tarifParJour;
     @ElementCollection
+    @CollectionTable(name = "utilisateur_animaux_acceptes", joinColumns = @JoinColumn(name = "utilisateur_id"))
     @Enumerated(EnumType.STRING)
     private List<TypeAnimal> typeAnimauxAcceptes;
+
     private String descriptionService;
     @ElementCollection
     private List<String> photosHebergement;
@@ -51,5 +56,12 @@ public class Utilisateur {
     private List<Avis> avisLaisses;
 
 
+    public String getMotDePasse() {
+        return motDePasse;
+    }
+
+    public void setMotDePasse(String motDePasse) {
+        this.motDePasse = motDePasse;
+    }
 
 }
