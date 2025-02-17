@@ -1,9 +1,15 @@
 spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/pethoster
+    username: pethoster
+    password: pethoster
+
   docker:
     compose:
       enabled: true
       lifecycle-management: start_only
       file: src/main/docker/compose.yml
+
 
   jpa:
     hibernate:
