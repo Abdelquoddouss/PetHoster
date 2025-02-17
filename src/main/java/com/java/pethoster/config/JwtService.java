@@ -13,6 +13,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 
 @Service
@@ -53,7 +54,7 @@ public class JwtService {
     public String getRole(String email){
         return userRepository.findByEmail(email).get().getRole().name();
     }
-    public Long getId(String email){
+    public UUID getId(String email){
         return userRepository.findByEmail(email).get().getId();
     }
     public String generateToken(UserDetails userDetails){

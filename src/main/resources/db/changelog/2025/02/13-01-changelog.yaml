@@ -7,13 +7,12 @@ databaseChangeLog:
         - createTable:
             columns:
               - column:
-                  autoIncrement: true
                   constraints:
                     nullable: false
                     primaryKey: true
                     primaryKeyName: pk_animal
                   name: id
-                  type: BIGINT
+                  type: UUID
               - column:
                   name: nom
                   type: VARCHAR(255)
@@ -34,7 +33,7 @@ databaseChangeLog:
                   type: VARCHAR(255)
               - column:
                   name: proprietaire_id
-                  type: BIGINT
+                  type: UUID
             tableName: animal
   - changeSet:
       id: 1739453657805-2
@@ -47,7 +46,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                   name: animal_id
-                  type: BIGINT
+                  type: UUID
               - column:
                   name: photos
                   type: VARCHAR(255)
@@ -60,13 +59,12 @@ databaseChangeLog:
         - createTable:
             columns:
               - column:
-                  autoIncrement: true
                   constraints:
                     nullable: false
                     primaryKey: true
                     primaryKeyName: pk_avis
                   name: id
-                  type: BIGINT
+                  type: UUID
               - column:
                   name: note
                   type: INT
@@ -78,10 +76,10 @@ databaseChangeLog:
                   type: DATE
               - column:
                   name: proprietaire_id
-                  type: BIGINT
+                  type: UUID
               - column:
                   name: hebergeur_id
-                  type: BIGINT
+                  type: UUID
             tableName: avis
   - changeSet:
       id: 1739453657805-4
@@ -91,19 +89,18 @@ databaseChangeLog:
         - createTable:
             columns:
               - column:
-                  autoIncrement: true
                   constraints:
                     nullable: false
                     primaryKey: true
                     primaryKeyName: pk_messagerie
                   name: id
-                  type: BIGINT
+                  type: UUID
               - column:
                   name: expediteur_id
-                  type: BIGINT
+                  type: UUID
               - column:
                   name: destinataire_id
-                  type: BIGINT
+                  type: UUID
               - column:
                   name: message
                   type: VARCHAR(255)
@@ -122,13 +119,12 @@ databaseChangeLog:
         - createTable:
             columns:
               - column:
-                  autoIncrement: true
                   constraints:
                     nullable: false
                     primaryKey: true
                     primaryKeyName: pk_paiement
                   name: id
-                  type: BIGINT
+                  type: UUID
               - column:
                   name: montant
                   type: DOUBLE
@@ -143,7 +139,7 @@ databaseChangeLog:
                   type: VARCHAR(255)
               - column:
                   name: reservation_id
-                  type: BIGINT
+                  type: UUID
             tableName: paiement
   - changeSet:
       id: 1739453657805-6
@@ -153,13 +149,12 @@ databaseChangeLog:
         - createTable:
             columns:
               - column:
-                  autoIncrement: true
                   constraints:
                     nullable: false
                     primaryKey: true
                     primaryKeyName: pk_reservation
                   name: id
-                  type: BIGINT
+                  type: UUID
               - column:
                   name: date_debut
                   type: DATE
@@ -180,10 +175,10 @@ databaseChangeLog:
                   type: DATE
               - column:
                   name: proprietaire_id
-                  type: BIGINT
+                  type: UUID
               - column:
                   name: hebergeur_id
-                  type: BIGINT
+                  type: UUID
             tableName: reservation
   - changeSet:
       id: 1739453657805-7
@@ -193,13 +188,12 @@ databaseChangeLog:
         - createTable:
             columns:
               - column:
-                  autoIncrement: true
                   constraints:
                     nullable: false
                     primaryKey: true
                     primaryKeyName: pk_utilisateur
                   name: id
-                  type: BIGINT
+                  type: UUID
               - column:
                   name: nom
                   type: VARCHAR(255)
@@ -242,7 +236,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                   name: utilisateur_id
-                  type: BIGINT
+                  type: UUID
               - column:
                   name: photos_hebergement
                   type: VARCHAR(255)
@@ -258,7 +252,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                   name: utilisateur_id
-                  type: BIGINT
+                  type: UUID
               - column:
                   name: type_animaux_acceptes
                   type: VARCHAR(255)
