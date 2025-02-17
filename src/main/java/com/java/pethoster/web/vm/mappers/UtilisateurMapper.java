@@ -1,6 +1,7 @@
 package com.java.pethoster.web.vm.mappers;
 
 import com.java.pethoster.domain.Utilisateur;
+import com.java.pethoster.web.vm.request.LoginRequest;
 import com.java.pethoster.web.vm.request.RegisterRequest;
 import com.java.pethoster.web.vm.response.UtilisateurResponse;
 import org.mapstruct.Mapper;
@@ -9,4 +10,5 @@ import org.mapstruct.Mapper;
 public interface UtilisateurMapper {
     Utilisateur toEntity(RegisterRequest request);
     UtilisateurResponse toResponse(Utilisateur utilisateur);
+    Utilisateur toUser(LoginRequest request);
 }
