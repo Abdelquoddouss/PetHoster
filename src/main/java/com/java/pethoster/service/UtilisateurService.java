@@ -10,14 +10,21 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
+
 public class UtilisateurService {
 
     private final UtilisateurRepository utilisateurRepository;
     private final UtilisateurMapper utilisateurMapper;
+
+    public UtilisateurService (UtilisateurRepository utilisateurRepository, UtilisateurMapper utilisateurMapper) {
+        this.utilisateurRepository = utilisateurRepository;
+        this.utilisateurMapper = utilisateurMapper;
+    }
 
     public UtilisateurResponse getUtilisateurById(UUID id) {
         Utilisateur utilisateur = utilisateurRepository.findById(id)
@@ -44,6 +51,18 @@ public class UtilisateurService {
     public void deleteUser(UUID id) {
         Utilisateur utilisateur = utilisateurRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé avec l'ID : " + id));
+
+        utilisateur.getTypeAnimauxAcceptes().clear(); // Supprime la relation
+        utilisateurRepository.save(utilisateur); // Sauvegarde l'état après suppression des relations
+
         utilisateurRepository.delete(utilisateur);
+    }
+
+
+    public List<UtilisateurResponse> getAllUsers() {
+        List<Utilisateur> utilisateurs = utilisateurRepository.findAll();
+        return utilisateurs.stream()
+                .map(utilisateurMapper::toResponse)
+                .collect(Collectors.toList());
     }
 }

@@ -28,8 +28,10 @@ public class Reservation {
     private LocalDate dateReservation;
 
     @ManyToOne
+    @JoinColumn(name = "proprietaire_id", nullable = false)
     private Utilisateur proprietaire;
 
     @ManyToOne
+    @JoinColumn(name = "hebergeur_id", nullable = false)
     private Utilisateur hebergeur;
 }

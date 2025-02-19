@@ -1,13 +1,11 @@
 package com.java.pethoster.domain;
 
-import com.java.pethoster.domain.enums.TypeAnimal;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
-
 
 @Entity
 @Getter
@@ -21,15 +19,13 @@ public class Animal {
     private String race;
     private Integer age;
 
-    @Enumerated(EnumType.STRING)
-    private TypeAnimal espece;
+    @ManyToOne
+    @JoinColumn(name = "proprietaire_id", nullable = false)
+    private Utilisateur proprietaire;
 
     private String besoinsSpecifiques;
     private String carnetVaccination;
 
     @ElementCollection
     private List<String> photos;
-
-    @ManyToOne
-    private Utilisateur proprietaire;
 }

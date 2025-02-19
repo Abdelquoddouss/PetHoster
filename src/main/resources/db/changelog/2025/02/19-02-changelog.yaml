@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 1739453657805-1
+      id: 1739963288898-1
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -23,20 +23,19 @@ databaseChangeLog:
                   name: age
                   type: INT
               - column:
-                  name: espece
-                  type: VARCHAR(255)
-              - column:
                   name: besoins_specifiques
                   type: VARCHAR(255)
               - column:
                   name: carnet_vaccination
                   type: VARCHAR(255)
               - column:
+                  constraints:
+                    nullable: false
                   name: proprietaire_id
                   type: UUID
             tableName: animal
   - changeSet:
-      id: 1739453657805-2
+      id: 1739963288898-2
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -52,7 +51,7 @@ databaseChangeLog:
                   type: VARCHAR(255)
             tableName: animal_photos
   - changeSet:
-      id: 1739453657805-3
+      id: 1739963288898-3
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -82,7 +81,7 @@ databaseChangeLog:
                   type: UUID
             tableName: avis
   - changeSet:
-      id: 1739453657805-4
+      id: 1739963288898-4
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -112,7 +111,7 @@ databaseChangeLog:
                   type: BOOLEAN
             tableName: messagerie
   - changeSet:
-      id: 1739453657805-5
+      id: 1739963288898-5
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -142,7 +141,7 @@ databaseChangeLog:
                   type: UUID
             tableName: paiement
   - changeSet:
-      id: 1739453657805-6
+      id: 1739963288898-6
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -174,14 +173,36 @@ databaseChangeLog:
                   name: date_reservation
                   type: DATE
               - column:
+                  constraints:
+                    nullable: false
                   name: proprietaire_id
                   type: UUID
               - column:
+                  constraints:
+                    nullable: false
                   name: hebergeur_id
                   type: UUID
             tableName: reservation
   - changeSet:
-      id: 1739453657805-7
+      id: 1739963288898-7
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_typeanimal
+                  name: id
+                  type: UUID
+              - column:
+                  name: animal_type
+                  type: VARCHAR(255)
+            tableName: type_animal
+  - changeSet:
+      id: 1739963288898-8
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -226,7 +247,7 @@ databaseChangeLog:
                   type: VARCHAR(255)
             tableName: utilisateur
   - changeSet:
-      id: 1739453657805-8
+      id: 1739963288898-9
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -242,23 +263,7 @@ databaseChangeLog:
                   type: VARCHAR(255)
             tableName: utilisateur_photos_hebergement
   - changeSet:
-      id: 1739453657805-9
-      author: Youcode
-      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
-      changes:
-        - createTable:
-            columns:
-              - column:
-                  constraints:
-                    nullable: false
-                  name: utilisateur_id
-                  type: UUID
-              - column:
-                  name: type_animaux_acceptes
-                  type: VARCHAR(255)
-            tableName: utilisateur_type_animaux_acceptes
-  - changeSet:
-      id: 1739453657805-10
+      id: 1739963288898-10
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -269,7 +274,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: utilisateur
   - changeSet:
-      id: 1739453657805-11
+      id: 1739963288898-11
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -280,7 +285,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: utilisateur
   - changeSet:
-      id: 1739453657805-12
+      id: 1739963288898-12
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -291,7 +296,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: utilisateur
   - changeSet:
-      id: 1739453657805-13
+      id: 1739963288898-13
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -302,7 +307,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: utilisateur
   - changeSet:
-      id: 1739453657805-14
+      id: 1739963288898-14
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -313,7 +318,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: utilisateur
   - changeSet:
-      id: 1739453657805-15
+      id: 1739963288898-15
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -324,7 +329,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: reservation
   - changeSet:
-      id: 1739453657805-16
+      id: 1739963288898-16
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -335,7 +340,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: utilisateur
   - changeSet:
-      id: 1739453657805-17
+      id: 1739963288898-17
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -346,7 +351,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: utilisateur
   - changeSet:
-      id: 1739453657805-18
+      id: 1739963288898-18
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -357,7 +362,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: animal
   - changeSet:
-      id: 1739453657805-19
+      id: 1739963288898-19
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -367,15 +372,34 @@ databaseChangeLog:
             constraintName: fk_utilisateur_photoshebergement_on_utilisateur
             referencedColumnNames: id
             referencedTableName: utilisateur
-  - changeSet:
-      id: 1739453657805-20
-      author: Youcode
-      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
-      changes:
-        - addForeignKeyConstraint:
-            baseColumnNames: utilisateur_id
-            baseTableName: utilisateur_type_animaux_acceptes
-            constraintName: fk_utilisateur_typeanimauxacceptes_on_utilisateur
-            referencedColumnNames: id
-            referencedTableName: utilisateur
 
+
+  - changeSet:
+      id: 001_create_utilisateur_type_animal
+      author: toi
+      changes:
+        - createTable:
+            tableName: utilisateur_type_animal
+            columns:
+              - column:
+                  name: utilisateur_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type_animal_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: utilisateur_type_animal
+            baseColumnNames: utilisateur_id
+            constraintName: fk_utilisateur_type_animal_utilisateur
+            referencedTableName: utilisateur
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: utilisateur_type_animal
+            baseColumnNames: type_animal_id
+            constraintName: fk_utilisateur_type_animal_type_animal
+            referencedTableName: type_animal
+            referencedColumnNames: id

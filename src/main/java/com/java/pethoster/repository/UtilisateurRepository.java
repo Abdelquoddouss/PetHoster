@@ -10,10 +10,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long> {
+@Repository
+public interface UtilisateurRepository extends JpaRepository<Utilisateur, UUID> {
     Optional<Utilisateur> findByEmail(String email);
-    Optional<Utilisateur> findById(UUID id);
-    @Modifying
-    @Query("DELETE FROM Utilisateur u WHERE u.id = :id")
-    void deleteUser(@Param("id") UUID id);
+
 }
