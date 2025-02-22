@@ -4,6 +4,7 @@ import com.java.pethoster.domain.Utilisateur;
 import com.java.pethoster.service.HebergeurService;
 import com.java.pethoster.web.vm.mappers.HebergeurMapper;
 import com.java.pethoster.web.vm.request.HebergeurRequest;
+import com.java.pethoster.web.vm.request.HebergeurSearchRequest;
 import com.java.pethoster.web.vm.response.HebergeurResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -57,5 +58,11 @@ public class HebergeurController {
     public ResponseEntity<Void> deleteHebergeur(@PathVariable UUID id) {
         hebergeurService.deleteHebergeur(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<List<HebergeurResponse>> searchHebergeurs(@RequestBody HebergeurSearchRequest searchRequest) {
+        List<HebergeurResponse> hebergeurs = hebergeurService.searchHebergeurs(searchRequest);
+        return ResponseEntity.ok(hebergeurs);
     }
 }

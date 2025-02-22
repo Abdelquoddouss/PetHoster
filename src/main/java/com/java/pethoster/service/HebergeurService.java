@@ -7,10 +7,12 @@ import com.java.pethoster.exception.exps.ResourceNotFoundException;
 import com.java.pethoster.repository.TypeAnimalRepository;
 import com.java.pethoster.repository.UtilisateurRepository;
 import com.java.pethoster.web.vm.mappers.HebergeurMapper;
+import com.java.pethoster.web.vm.request.HebergeurSearchRequest;
 import com.java.pethoster.web.vm.response.HebergeurResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -85,5 +87,52 @@ public class HebergeurService {
         Utilisateur hebergeur = (Utilisateur) utilisateurRepository.findByIdAndRole(id, Role.HEBERGEUR)
                 .orElseThrow(() -> new ResourceNotFoundException("Hébergeur non trouvé avec l'ID : " + id));
         utilisateurRepository.delete(hebergeur);
+    }
+
+    public List<HebergeurResponse> searchHebergeurs(HebergeurSearchRequest searchRequest) {
+        // Récupérer tous les hébergeurs
+        List<Utilisateur> hebergeurs = utilisateurRepository.findByRole(Role.HEBERGEUR);
+
+        // Appliquer les filtres
+        return hebergeurs.stream()
+                .filter(hebergeur -> {
+                    // Filtre par localisation
+                    if (searchRequest.getLocalisation() != null && !searchRequest.getLocalisation().isEmpty()) {
+                        return hebergeur.getAdresse().toLowerCase().contains(searchRequest.getLocalisation().toLowerCase());
+                    }
+                    return true;
+                })
+                .filter(hebergeur -> {
+                    // Filtre par type d'animal
+                    if (searchRequest.getTypeAnimauxIds() != null && !searchRequest.getTypeAnimauxIds().isEmpty()) {
+                        return hebergeur.getTypeAnimauxAcceptes().stream()
+                                .anyMatch(typeAnimal -> searchRequest.getTypeAnimauxIds().contains(typeAnimal.getId()));
+                    }
+                    return true;
+                })
+                .filter(hebergeur -> {
+                    // Filtre par tarif maximum par jour
+                    if (searchRequest.getTarifMaxParJour() != null) {
+                        return hebergeur.getTarifParJour() <= searchRequest.getTarifMaxParJour();
+                    }
+                    return true;
+                })
+                .filter(hebergeur -> {
+                    // Filtre par disponibilités (dates)
+                    if (searchRequest.getDateDebut() != null && searchRequest.getDateFin() != null) {
+                        // Vérifier si l'hébergeur est disponible pour les dates demandées
+                        return isHebergeurAvailable(hebergeur, searchRequest.getDateDebut(), searchRequest.getDateFin());
+                    }
+                    return true;
+                })
+                .map(hebergeurMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+
+    private boolean isHebergeurAvailable(Utilisateur hebergeur, LocalDate dateDebut, LocalDate dateFin) {
+        // Vérifier si l'hébergeur a des réservations qui chevauchent les dates demandées
+        return hebergeur.getReservationsEffectuees().stream()
+                .noneMatch(reservation -> reservation.getDateDebut().isBefore(dateFin) && reservation.getDateFin().isAfter(dateDebut));
     }
 }
