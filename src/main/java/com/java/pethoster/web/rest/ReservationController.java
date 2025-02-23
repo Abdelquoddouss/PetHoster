@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/reservations")
 @RequiredArgsConstructor
@@ -16,6 +18,12 @@ public class ReservationController {
     @PostMapping
     public ResponseEntity<ReservationResponse> createReservation(@RequestBody ReservationRequest reservationRequest) {
         ReservationResponse reservationResponse = reservationService.createReservation(reservationRequest);
+        return ResponseEntity.ok(reservationResponse);
+    }
+
+    @PutMapping("/{id}/annuler")
+    public ResponseEntity<ReservationResponse> annulerReservation(@PathVariable UUID id) {
+        ReservationResponse reservationResponse = reservationService.annulerReservation(id);
         return ResponseEntity.ok(reservationResponse);
     }
 }

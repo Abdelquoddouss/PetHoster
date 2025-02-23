@@ -58,4 +58,24 @@ public class ReservationService {
         return hebergeur.getReservationsEffectuees().stream()
                 .noneMatch(reservation -> reservation.getDateDebut().isBefore(dateFin) && reservation.getDateFin().isAfter(dateDebut));
     }
+
+    public ReservationResponse annulerReservation(UUID id) {
+        // Récupérer la réservation
+        Reservation reservation = reservationRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Réservation non trouvée avec l'ID : " + id));
+
+        // Vérifier si la réservation peut être annulée
+        if (reservation.getStatut() == StatutReservation.ANNULEE || reservation.getStatut() == StatutReservation.TERMINEE) {
+            throw new IllegalArgumentException("La réservation ne peut pas être annulée car elle est déjà " + reservation.getStatut());
+        }
+
+        // Changer le statut de la réservation
+        reservation.setStatut(StatutReservation.ANNULEE);
+
+        // Sauvegarder la réservation mise à jour
+        Reservation updatedReservation = reservationRepository.save(reservation);
+
+        // Convertir en réponse
+        return reservationMapper.toResponse(updatedReservation);
+    }
 }
