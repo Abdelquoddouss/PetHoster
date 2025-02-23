@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -34,5 +35,11 @@ public class ReservationController {
             @RequestBody ReservationConfirmationRequest confirmationRequest) {
         ReservationResponse reservationResponse = reservationService.confirmerReservation(id, confirmationRequest);
         return ResponseEntity.ok(reservationResponse);
+    }
+
+    @GetMapping("/hebergeur/{hebergeurId}")
+    public ResponseEntity<List<ReservationResponse>> getReservationsByHebergeur(@PathVariable UUID hebergeurId) {
+        List<ReservationResponse> reservations = reservationService.getReservationsByHebergeur(hebergeurId);
+        return ResponseEntity.ok(reservations);
     }
 }

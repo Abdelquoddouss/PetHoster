@@ -14,7 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -101,9 +103,22 @@ public class ReservationService {
             reservation.setStatut(StatutReservation.ANNULEE); // Annuler la réservation
         }
 
-        // Sauvegarder la réservation mise à jour
         Reservation updatedReservation = reservationRepository.save(reservation);
-
-        // Convertir en réponse
         return reservationMapper.toResponse(updatedReservation);
-    }}
+    }
+
+    public List<ReservationResponse> getReservationsByHebergeur(UUID hebergeurId) {
+        Utilisateur hebergeur = utilisateurRepository.findById(hebergeurId)
+                .orElseThrow(() -> new ResourceNotFoundException("Hébergeur non trouvé avec l'ID : " + hebergeurId));
+
+        // Récupérer toutes les réservations associées à cet hébergeur
+        List<Reservation> reservations = reservationRepository.findByHebergeur(hebergeur);
+
+        // Convertir les réservations en ReservationResponse
+        return reservations.stream()
+                .map(reservationMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+
+}

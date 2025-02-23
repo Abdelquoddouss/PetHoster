@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class ReservationConfirmationRequest {
     private boolean confirmer; // true pour confirmer, false pour refuser
-    private String message; // Message optionnel (par exemple, une raison de refus)
+    private String message;
 }
