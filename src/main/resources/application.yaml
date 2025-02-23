@@ -10,7 +10,6 @@ spring:
       lifecycle-management: start_only
       file: src/main/docker/compose.yml
 
-
   jpa:
     hibernate:
       ddl-auto: none
@@ -24,5 +23,10 @@ spring:
   liquibase:
     enabled: true
     change-log: db/changelog/2025/02/master.yaml
+
 server:
   port: 8081
+
+stripe:
+  public-key: pk_test_51QvhR5KntIDuOGQK8gPUNw5oIiwIgnms0mH61A1XjUg21nH5IReTLvBjJulWPmiHe4w3HDjzqzc9lM7NcLo2p4ZN006cwGNeJD
+  secret-key: sk_test_51QvhR5KntIDuOGQKaC1QDciukeCMS6Ow7TsqASeEAIfQEjt9186QmgdtdpMFUkNZosNrE4fM7x73RyI8DHOGiyyM00asAqTKEn

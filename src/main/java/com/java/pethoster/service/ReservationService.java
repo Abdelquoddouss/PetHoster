@@ -7,9 +7,12 @@ import com.java.pethoster.exception.exps.ResourceNotFoundException;
 import com.java.pethoster.repository.ReservationRepository;
 import com.java.pethoster.repository.UtilisateurRepository;
 import com.java.pethoster.web.vm.mappers.ReservationMapper;
+import com.java.pethoster.web.vm.request.PaymentRequest;
 import com.java.pethoster.web.vm.request.ReservationConfirmationRequest;
 import com.java.pethoster.web.vm.request.ReservationRequest;
+import com.java.pethoster.web.vm.response.PaymentResponse;
 import com.java.pethoster.web.vm.response.ReservationResponse;
+import com.stripe.exception.StripeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +27,9 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final UtilisateurRepository utilisateurRepository;
     private final ReservationMapper reservationMapper;
+    private final PaymentService paymentService;
 
-    public ReservationResponse createReservation(ReservationRequest reservationRequest) {
+    public ReservationResponse createReservation(ReservationRequest reservationRequest) throws StripeException {
         // Récupérer le propriétaire et l'hébergeur
         Utilisateur proprietaire = utilisateurRepository.findById(reservationRequest.getProprietaireId())
                 .orElseThrow(() -> new ResourceNotFoundException("Propriétaire non trouvé avec l'ID : " + reservationRequest.getProprietaireId()));
@@ -52,9 +56,25 @@ public class ReservationService {
         // Sauvegarder la réservation
         Reservation savedReservation = reservationRepository.save(reservation);
 
+        // Créer un PaymentIntent avec Stripe
+        PaymentRequest paymentRequest = new PaymentRequest();
+        paymentRequest.setReservationId(savedReservation.getId());
+        paymentRequest.setAmount((long) (reservationRequest.getMontantTotal() * 100)); // Convertir en centimes
+        paymentRequest.setCurrency("eur"); // ou la devise de votre choix
+
+        PaymentResponse paymentResponse = paymentService.createPaymentIntent(paymentRequest);
+
+
+
         // Convertir en réponse
-        return reservationMapper.toResponse(savedReservation);
+        ReservationResponse reservationResponse = reservationMapper.toResponse(savedReservation);
+        reservationResponse.setPaymentIntentId(paymentResponse.getPaymentIntentId());
+        reservationResponse.setClientSecret(paymentResponse.getClientSecret());
+
+        return reservationResponse;
     }
+
+
 
     private boolean isHebergeurAvailable(Utilisateur hebergeur, LocalDate dateDebut, LocalDate dateFin) {
         // Vérifier si l'hébergeur a des réservations qui chevauchent les dates demandées

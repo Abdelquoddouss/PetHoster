@@ -26,6 +26,7 @@ public class Reservation {
     private Integer nombreAnimaux;
     private Double montantTotal;
     private LocalDate dateReservation;
+    private String paymentIntentId;
 
     @ManyToOne
     @JoinColumn(name = "proprietaire_id", nullable = false)

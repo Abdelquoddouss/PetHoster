@@ -375,6 +375,19 @@ databaseChangeLog:
 
 
   - changeSet:
+      id: 001_add_payment_intent_id_to_reservation  # Un ID unique pour ce changeSet
+      author: Youcode  # Votre nom ou équipe
+      changes:
+        - addColumn:
+            tableName: reservation
+            columns:
+              - column:
+                  name: payment_intent_id
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: true  # Ou false si la colonne ne peut pas être nulle
+
+  - changeSet:
       id: 001_create_utilisateur_type_animal
       author: toi
       changes:

@@ -4,6 +4,7 @@ import com.java.pethoster.service.ReservationService;
 import com.java.pethoster.web.vm.request.ReservationConfirmationRequest;
 import com.java.pethoster.web.vm.request.ReservationRequest;
 import com.java.pethoster.web.vm.response.ReservationResponse;
+import com.stripe.exception.StripeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @PostMapping
-    public ResponseEntity<ReservationResponse> createReservation(@RequestBody ReservationRequest reservationRequest) {
+    public ResponseEntity<ReservationResponse> createReservation(@RequestBody ReservationRequest reservationRequest) throws StripeException {
         ReservationResponse reservationResponse = reservationService.createReservation(reservationRequest);
         return ResponseEntity.ok(reservationResponse);
     }

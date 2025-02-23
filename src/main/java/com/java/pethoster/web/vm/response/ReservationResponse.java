@@ -19,6 +19,8 @@ public class ReservationResponse {
     private Integer nombreAnimaux;
     private Double montantTotal;
     private LocalDate dateReservation;
-    private UUID proprietaireId; // ID du propriétaire
-    private UUID hebergeurId; // ID de l'hébergeur
+    private UUID proprietaireId;
+    private UUID hebergeurId;
+    private String paymentIntentId;
+    private String clientSecret;
 }
