@@ -12,6 +12,7 @@ import java.util.UUID;
 public interface ReservationRepository extends JpaRepository<Reservation, UUID> {
 
     List<Reservation> findByHebergeur(Utilisateur hebergeur);
+    List<Reservation> findByProprietaire(Utilisateur proprietaire);
 
 
 }

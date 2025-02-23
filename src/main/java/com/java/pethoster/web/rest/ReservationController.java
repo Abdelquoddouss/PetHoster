@@ -42,4 +42,10 @@ public class ReservationController {
         List<ReservationResponse> reservations = reservationService.getReservationsByHebergeur(hebergeurId);
         return ResponseEntity.ok(reservations);
     }
+
+    @GetMapping("/proprietaire/{proprietaireId}")
+    public ResponseEntity<List<ReservationResponse>> getReservationsByProprietaire(@PathVariable UUID proprietaireId) {
+        List<ReservationResponse> reservations = reservationService.getReservationsByProprietaire(proprietaireId);
+        return ResponseEntity.ok(reservations);
+    }
 }

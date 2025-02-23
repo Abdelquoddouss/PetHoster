@@ -120,5 +120,19 @@ public class ReservationService {
                 .collect(Collectors.toList());
     }
 
+    public List<ReservationResponse> getReservationsByProprietaire(UUID proprietaireId) {
+        // Vérifier que le propriétaire existe
+        Utilisateur proprietaire = utilisateurRepository.findById(proprietaireId)
+                .orElseThrow(() -> new ResourceNotFoundException("Propriétaire non trouvé avec l'ID : " + proprietaireId));
+
+        // Récupérer toutes les réservations associées à ce propriétaire
+        List<Reservation> reservations = reservationRepository.findByProprietaire(proprietaire);
+
+        // Convertir les réservations en ReservationResponse
+        return reservations.stream()
+                .map(reservationMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
 
 }
