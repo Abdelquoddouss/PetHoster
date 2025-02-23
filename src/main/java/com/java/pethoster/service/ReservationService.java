@@ -7,6 +7,7 @@ import com.java.pethoster.exception.exps.ResourceNotFoundException;
 import com.java.pethoster.repository.ReservationRepository;
 import com.java.pethoster.repository.UtilisateurRepository;
 import com.java.pethoster.web.vm.mappers.ReservationMapper;
+import com.java.pethoster.web.vm.request.ReservationConfirmationRequest;
 import com.java.pethoster.web.vm.request.ReservationRequest;
 import com.java.pethoster.web.vm.response.ReservationResponse;
 import lombok.RequiredArgsConstructor;
@@ -78,4 +79,31 @@ public class ReservationService {
         // Convertir en réponse
         return reservationMapper.toResponse(updatedReservation);
     }
-}
+
+
+    public ReservationResponse confirmerReservation(UUID id, ReservationConfirmationRequest confirmationRequest) {
+        // Récupérer la réservation
+        Reservation reservation = reservationRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Réservation non trouvée avec l'ID : " + id));
+
+        // Vérifier que l'utilisateur est bien l'hébergeur associé à la réservation
+        // (Vous pouvez ajouter une vérification d'authentification ici pour vous assurer que l'utilisateur est l'hébergeur)
+
+        // Vérifier que la réservation est en attente
+        if (reservation.getStatut() != StatutReservation.EN_ATTENTE) {
+            throw new IllegalArgumentException("La réservation ne peut pas être confirmée ou refusée car elle n'est pas en attente");
+        }
+
+        // Changer le statut de la réservation en fonction de la demande
+        if (confirmationRequest.isConfirmer()) {
+            reservation.setStatut(StatutReservation.CONFIRMEE); // Confirmer la réservation
+        } else {
+            reservation.setStatut(StatutReservation.ANNULEE); // Annuler la réservation
+        }
+
+        // Sauvegarder la réservation mise à jour
+        Reservation updatedReservation = reservationRepository.save(reservation);
+
+        // Convertir en réponse
+        return reservationMapper.toResponse(updatedReservation);
+    }}
