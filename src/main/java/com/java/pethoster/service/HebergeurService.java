@@ -25,22 +25,18 @@ public class HebergeurService {
     private final HebergeurMapper hebergeurMapper;
 
     public HebergeurResponse createHebergeur(Utilisateur hebergeur, List<UUID> typeAnimauxAcceptesIds, List<String> photosHebergement) {
-        // Validation des photos
         if (photosHebergement == null || photosHebergement.isEmpty()) {
             throw new IllegalArgumentException("Au moins une photo est requise");
         }
 
-        // Vérification des types d'animaux
         List<TypeAnimal> typeAnimauxAcceptes = typeAnimalRepository.findAllById(typeAnimauxAcceptesIds);
         if (typeAnimauxAcceptes.size() != typeAnimauxAcceptesIds.size()) {
             throw new ResourceNotFoundException("Un ou plusieurs types d'animaux spécifiés n'existent pas");
         }
 
-        // Attribution des types d'animaux et des photos à l'hébergeur
         hebergeur.setTypeAnimauxAcceptes(typeAnimauxAcceptes);
         hebergeur.setPhotosHebergement(photosHebergement);
 
-        // Sauvegarde de l'hébergeur
         Utilisateur savedHebergeur = utilisateurRepository.save(hebergeur);
         return hebergeurMapper.toResponse(savedHebergeur);
     }
@@ -62,23 +58,19 @@ public class HebergeurService {
         Utilisateur existingHebergeur = (Utilisateur) utilisateurRepository.findByIdAndRole(id, Role.HEBERGEUR)
                 .orElseThrow(() -> new ResourceNotFoundException("Hébergeur non trouvé avec l'ID : " + id));
 
-        // Mettre à jour les champs de base
         existingHebergeur.setNom(hebergeur.getNom());
         existingHebergeur.setPrenom(hebergeur.getPrenom());
         existingHebergeur.setEmail(hebergeur.getEmail());
         existingHebergeur.setTelephone(hebergeur.getTelephone());
         existingHebergeur.setAdresse(hebergeur.getAdresse());
 
-        // Mettre à jour les champs spécifiques à l'hébergeur
         existingHebergeur.setTarifParJour(hebergeur.getTarifParJour());
         existingHebergeur.setDescriptionService(hebergeur.getDescriptionService());
         existingHebergeur.setPhotosHebergement(photosHebergement);
 
-        // Mettre à jour les types d'animaux acceptés
         List<TypeAnimal> typeAnimauxAcceptes = typeAnimalRepository.findAllById(typeAnimauxAcceptesIds);
         existingHebergeur.setTypeAnimauxAcceptes(typeAnimauxAcceptes);
 
-        // Sauvegarde des modifications
         Utilisateur updatedHebergeur = utilisateurRepository.save(existingHebergeur);
         return hebergeurMapper.toResponse(updatedHebergeur);
     }
@@ -90,20 +82,16 @@ public class HebergeurService {
     }
 
     public List<HebergeurResponse> searchHebergeurs(HebergeurSearchRequest searchRequest) {
-        // Récupérer tous les hébergeurs
         List<Utilisateur> hebergeurs = utilisateurRepository.findByRole(Role.HEBERGEUR);
 
-        // Appliquer les filtres
         return hebergeurs.stream()
                 .filter(hebergeur -> {
-                    // Filtre par localisation
                     if (searchRequest.getLocalisation() != null && !searchRequest.getLocalisation().isEmpty()) {
                         return hebergeur.getAdresse().toLowerCase().contains(searchRequest.getLocalisation().toLowerCase());
                     }
                     return true;
                 })
                 .filter(hebergeur -> {
-                    // Filtre par type d'animal
                     if (searchRequest.getTypeAnimauxIds() != null && !searchRequest.getTypeAnimauxIds().isEmpty()) {
                         return hebergeur.getTypeAnimauxAcceptes().stream()
                                 .anyMatch(typeAnimal -> searchRequest.getTypeAnimauxIds().contains(typeAnimal.getId()));
@@ -111,16 +99,13 @@ public class HebergeurService {
                     return true;
                 })
                 .filter(hebergeur -> {
-                    // Filtre par tarif maximum par jour
                     if (searchRequest.getTarifMaxParJour() != null) {
                         return hebergeur.getTarifParJour() <= searchRequest.getTarifMaxParJour();
                     }
                     return true;
                 })
                 .filter(hebergeur -> {
-                    // Filtre par disponibilités (dates)
                     if (searchRequest.getDateDebut() != null && searchRequest.getDateFin() != null) {
-                        // Vérifier si l'hébergeur est disponible pour les dates demandées
                         return isHebergeurAvailable(hebergeur, searchRequest.getDateDebut(), searchRequest.getDateFin());
                     }
                     return true;
@@ -131,7 +116,6 @@ public class HebergeurService {
 
 
     private boolean isHebergeurAvailable(Utilisateur hebergeur, LocalDate dateDebut, LocalDate dateFin) {
-        // Vérifier si l'hébergeur a des réservations qui chevauchent les dates demandées
         return hebergeur.getReservationsEffectuees().stream()
                 .noneMatch(reservation -> reservation.getDateDebut().isBefore(dateFin) && reservation.getDateFin().isAfter(dateDebut));
     }
