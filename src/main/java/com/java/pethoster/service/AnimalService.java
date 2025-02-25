@@ -27,12 +27,14 @@ public class AnimalService {
     }
 
     public AnimalResponse createAnimal(AnimalRequest request) {
-        Utilisateur proprietaire = utilisateurRepository.findById(request.getProprietaireId())
-                .orElseThrow(() -> new ResourceNotFoundException("Propriétaire non trouvé avec l'ID : " + request.getProprietaireId()));
-
         if (request.getNom() == null || request.getNom().isEmpty()) {
             throw new InvalidDataException("Le nom de l'animal est requis");
         }
+
+        Utilisateur proprietaire = utilisateurRepository.findById(request.getProprietaireId())
+                .orElseThrow(() -> new ResourceNotFoundException("Propriétaire non trouvé avec l'ID : " + request.getProprietaireId()));
+
+
 
         Animal animal = animalMapper.toEntity(request, proprietaire);
         animal = animalRepository.save(animal);

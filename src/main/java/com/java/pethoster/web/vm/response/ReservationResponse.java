@@ -1,9 +1,7 @@
 package com.java.pethoster.web.vm.response;
 
 import com.java.pethoster.domain.enums.StatutReservation;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -11,6 +9,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ReservationResponse {
     private UUID id;
     private LocalDate dateDebut;
