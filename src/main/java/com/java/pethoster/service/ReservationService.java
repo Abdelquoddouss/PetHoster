@@ -72,7 +72,17 @@ public class ReservationService {
     private boolean isHebergeurAvailable(Utilisateur hebergeur, LocalDate dateDebut, LocalDate dateFin) {
         // Vérifier si l'hébergeur a des réservations qui chevauchent les dates demandées
         return hebergeur.getReservationsEffectuees().stream()
-                .noneMatch(reservation -> reservation.getDateDebut().isBefore(dateFin) && reservation.getDateFin().isAfter(dateDebut));
+                .noneMatch(reservation -> {
+                    LocalDate reservationDateDebut = reservation.getDateDebut();
+                    LocalDate reservationDateFin = reservation.getDateFin();
+
+                    // Skip the reservation if either date is null
+                    if (reservationDateDebut == null || reservationDateFin == null) {
+                        return false;
+                    }
+
+                    return reservationDateDebut.isBefore(dateFin) && reservationDateFin.isAfter(dateDebut);
+                });
     }
 
     public ReservationResponse annulerReservation(UUID id) {
