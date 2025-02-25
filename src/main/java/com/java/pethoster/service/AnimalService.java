@@ -1,6 +1,8 @@
 package com.java.pethoster.service;
 import com.java.pethoster.domain.Animal;
 import com.java.pethoster.domain.Utilisateur;
+import com.java.pethoster.exception.exps.InvalidDataException;
+import com.java.pethoster.exception.exps.ResourceNotFoundException;
 import com.java.pethoster.repository.AnimalRepository;
 import com.java.pethoster.repository.UtilisateurRepository;
 import com.java.pethoster.web.vm.mappers.AnimalMapper;
@@ -26,7 +28,11 @@ public class AnimalService {
 
     public AnimalResponse createAnimal(AnimalRequest request) {
         Utilisateur proprietaire = utilisateurRepository.findById(request.getProprietaireId())
-                .orElseThrow(() -> new RuntimeException("Propriétaire introuvable"));
+                .orElseThrow(() -> new ResourceNotFoundException("Propriétaire non trouvé avec l'ID : " + request.getProprietaireId()));
+
+        if (request.getNom() == null || request.getNom().isEmpty()) {
+            throw new InvalidDataException("Le nom de l'animal est requis");
+        }
 
         Animal animal = animalMapper.toEntity(request, proprietaire);
         animal = animalRepository.save(animal);

@@ -3,6 +3,7 @@ package com.java.pethoster.service;
 import com.java.pethoster.domain.Reservation;
 import com.java.pethoster.domain.Utilisateur;
 import com.java.pethoster.domain.enums.StatutReservation;
+import com.java.pethoster.exception.exps.ConflictException;
 import com.java.pethoster.exception.exps.ResourceNotFoundException;
 import com.java.pethoster.repository.ReservationRepository;
 import com.java.pethoster.repository.UtilisateurRepository;
@@ -30,43 +31,35 @@ public class ReservationService {
     private final PaymentService paymentService;
 
     public ReservationResponse createReservation(ReservationRequest reservationRequest) throws StripeException {
-        // Récupérer le propriétaire et l'hébergeur
         Utilisateur proprietaire = utilisateurRepository.findById(reservationRequest.getProprietaireId())
                 .orElseThrow(() -> new ResourceNotFoundException("Propriétaire non trouvé avec l'ID : " + reservationRequest.getProprietaireId()));
 
         Utilisateur hebergeur = utilisateurRepository.findById(reservationRequest.getHebergeurId())
                 .orElseThrow(() -> new ResourceNotFoundException("Hébergeur non trouvé avec l'ID : " + reservationRequest.getHebergeurId()));
 
-        // Vérifier la disponibilité de l'hébergeur
         if (!isHebergeurAvailable(hebergeur, reservationRequest.getDateDebut(), reservationRequest.getDateFin())) {
-            throw new IllegalArgumentException("L'hébergeur n'est pas disponible pour les dates demandées");
+            throw new ConflictException("L'hébergeur n'est pas disponible pour les dates demandées");
         }
 
-        // Créer la réservation
         Reservation reservation = new Reservation();
         reservation.setDateDebut(reservationRequest.getDateDebut());
         reservation.setDateFin(reservationRequest.getDateFin());
         reservation.setNombreAnimaux(reservationRequest.getNombreAnimaux());
         reservation.setMontantTotal(reservationRequest.getMontantTotal());
-        reservation.setStatut(StatutReservation.EN_ATTENTE); // Statut initial
-        reservation.setDateReservation(LocalDate.now()); // Date de la réservation
+        reservation.setStatut(StatutReservation.EN_ATTENTE);
+        reservation.setDateReservation(LocalDate.now());
         reservation.setProprietaire(proprietaire);
         reservation.setHebergeur(hebergeur);
 
-        // Sauvegarder la réservation
         Reservation savedReservation = reservationRepository.save(reservation);
 
-        // Créer un PaymentIntent avec Stripe
         PaymentRequest paymentRequest = new PaymentRequest();
         paymentRequest.setReservationId(savedReservation.getId());
-        paymentRequest.setAmount((long) (reservationRequest.getMontantTotal() * 100)); // Convertir en centimes
-        paymentRequest.setCurrency("eur"); // ou la devise de votre choix
+        paymentRequest.setAmount((long) (reservationRequest.getMontantTotal() * 100));
+        paymentRequest.setCurrency("eur");
 
         PaymentResponse paymentResponse = paymentService.createPaymentIntent(paymentRequest);
 
-
-
-        // Convertir en réponse
         ReservationResponse reservationResponse = reservationMapper.toResponse(savedReservation);
         reservationResponse.setPaymentIntentId(paymentResponse.getPaymentIntentId());
         reservationResponse.setClientSecret(paymentResponse.getClientSecret());
